@@ -12,21 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const about = 
-    [
-        'This is my background.',
-        'These are my interests.',
-        'These are some of my projects.'
-    ]
-
-/**
- * Modifies the 'innertext' of a given element 
- */
-function setContentTo(elementID, content) {
-  const container = document.getElementById(elementID);
-  container.innerText = content;
-}
-
 /**
  * Adds a random greeting to the page.
  */
@@ -38,24 +23,30 @@ function addRandomGreeting() {
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
   // Add it to the page.
-  setContentTo('greeting-container', greeting);
+  const container = document.getElementById('greeting-container');
+  container.innerText = greeting;
+  
 }
+
 
 /**
  * Selects the contents of the 'About' section.
  */
 function setAboutContentTo(section) {
+  elem = document.getElementById(section);
+  elem.style.display = "block";
   switch (section) {
     case 'background':
-      content = about[0];
+      document.getElementById('interests').style.display = "none";
+      document.getElementById('projects').style.display = "none";
       break;
     case 'interests':
-      content = about[1];
+      document.getElementById('background').style.display = "none";
+      document.getElementById('projects').style.display = "none";
       break; 
     case 'projects':
-      content = about[2];
+      document.getElementById('background').style.display = "none";
+      document.getElementById('interests').style.display = "none";
       break; 
-  }
-  
-  setContentTo('about-me-container', content);
+  }  
 }
