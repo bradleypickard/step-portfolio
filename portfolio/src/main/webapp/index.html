@@ -6,15 +6,35 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
+
   <body>
     <div id="content">
       <h1>Bradley's Portfolio</h1>
       <p>This is the portfolio of Bradley.</p>
       <p>My hobbies include wrestling my roommates (siblings) and playing videogames.</p>
       <img src="img/dog.jpg" alt="my dog">
+
       <p>Click here to get a random message:</p>
       <button onclick="addRandomGreeting()">New Message</button>
       <div id="greeting-container"></div>
+
+      <p>Click on the buttons below to learn a bit more about me!</p>
+      <div class="btn-group" style:"width:100%">
+        <button style="width:33.3%" onclick="setAboutContentTo('background')">Background</button>
+        <button style="width:33.3%" onclick="setAboutContentTo('interests')">Interests</button>
+        <button style="width:33.3%" onclick="setAboutContentTo('projects')">Projects</button>
+      </div>
+      
+      <div id="background" class="about-content">
+          <p>This is my background</p>
+      </div>
+      <div id="interests" class="about-content">
+          <p>These are my interests</p>
+      </div>
+      <div id="projects" class="about-content">
+          <p>These are my projects</p>
+      </div>
     </div>
   </body>
 </html>
+   

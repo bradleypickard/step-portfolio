@@ -17,12 +17,36 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['That\'s rough buddy', 'My cabbages!', 'Flameo, hotman', 'Who are you? And what do you want?'];
+      ['That\'s rough buddy', 'My cabbages!', 'Flameo, hotman!', 'Who are you? And what do you want?'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const container = document.getElementById('greeting-container');
+  container.innerText = greeting;
+  
+}
+
+
+/**
+ * Selects the contents of the 'About' section.
+ */
+function setAboutContentTo(section) {
+  elem = document.getElementById(section);
+  elem.style.display = "block";
+  switch (section) {
+    case 'background':
+      document.getElementById('interests').style.display = "none";
+      document.getElementById('projects').style.display = "none";
+      break;
+    case 'interests':
+      document.getElementById('background').style.display = "none";
+      document.getElementById('projects').style.display = "none";
+      break; 
+    case 'projects':
+      document.getElementById('background').style.display = "none";
+      document.getElementById('interests').style.display = "none";
+      break; 
+  }  
 }
