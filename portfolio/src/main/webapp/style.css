@@ -4,14 +4,41 @@
   width: 650px;
 }
 
-body {
-  background-color: lightblue;
-}
-
 #greeting-container {
   margin-top: 20px;
 }
 
 img {
     width: 500px
+}
+
+.btn-group button {
+  background-color: black;
+  /*border: 1px solid white;*/
+  color: white;
+  padding: 10px 24px;
+  cursor: pointer;
+  float: left;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #505050;
+}
+
+.btn-group button:focus {     
+    background-color:white;   
+    color:black; 
+    outline:0;
+}
+
+.about-content {
+    display:none;
 }
