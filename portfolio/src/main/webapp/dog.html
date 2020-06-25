@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bradley's Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    <div id="content">
+      <h1>Redford Mood Selector</h1>
+      <p>How are you feeling right now?</p>
+      <div class="btn-group" id="mood-btns" style="width:100%">
+        <div id="happy-btn"> <button style="width:20%" onclick="setMoodTo('happy')">Happy</button> </div>
+        <div id="sleepy-btn"> <button style="width:20%" onclick="setMoodTo('sleepy')">Sleepy</button> </div>
+        <div id="focused-btn"> <button style="width:20%" onclick="setMoodTo('focused')">Focused</button> </div>
+        <div id="energetic-btn"> <button style="width:20%" onclick="setMoodTo('energetic')">Energetic</button> </div>
+        <div id="goofy-btn"> <button style="width:20%" onclick="setMoodTo('goofy')">Goofy</button> </div>
+      </div>
+
+      <div id="happy" class="toggleable-content">
+        <img src="/img/dog-park.jpg" alt="happy dog">
+        <img src="/img/dog-pose.jpg" alt="happy dog">
+      </div>
+
+      <div id="sleepy" class="toggleable-content">
+        <img src="/img/dog-drowsy.jpg" alt="sleepy dog">
+        <img src="/img/dog-couch.jpg" alt="sleepy dog">
+        <img src="/img/dog-yawn.jpg" alt="sleepy dog">
+      </div>
+
+      <div id="focused" class="toggleable-content">
+        <img src="/img/dog-ready.jpg" alt="focused dog">
+        <img src="/img/dog-balance.jpg" alt="focused dog">
+        <img src="/img/dog-balance-2.jpg" alt="focused dog">
+      </div>
+
+      <div id="energetic" class="toggleable-content">
+        <img src="/img/dog-jump.jpg" alt="energetic dog">
+        <img src="/img/dog-miss.png" alt="energetic dog">
+        <img src="/img/dog-pant.jpg" alt="energetic dog">
+      </div>
+        
+      <div id="goofy" class="toggleable-content">
+        <img src="/img/dog-supine.jpg" alt="goofy dog">
+        <img src="/img/dog-face.jpg" alt="goofy dog">
+        <img src="/img/dog-supine-2.jpg" alt="goofy dog">
+        <img src="/img/dog-face-2.jpg" alt="goofy dog">
+        <img src="/img/dog-supine-3.jpg" alt="goofy dog">
+      </div>
+    </div>
+  </body>
+</html>
