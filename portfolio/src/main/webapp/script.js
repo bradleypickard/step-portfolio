@@ -15,9 +15,14 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['That\'s rough buddy', 'My cabbages!', 'Flameo, hotman!', 'Who are you? And what do you want?'];
+function addRandomGreeting() {  // eslint-disable-line no-unused-vars
+  const greetings = [
+    'That\'s rough buddy.',
+    'My cabbages!',
+    'Flameo, hotman!',
+    'Who are you? And what do you want?',
+    'Yip yip!',
+  ];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -25,28 +30,28 @@ function addRandomGreeting() {
   // Add it to the page.
   const container = document.getElementById('greeting-container');
   container.innerText = greeting;
-  
 }
-
 
 /**
  * Selects the contents of the 'About' section.
  */
-function setAboutContentTo(section) {
-  elem = document.getElementById(section);
-  elem.style.display = "block";
-  switch (section) {
-    case 'background':
-      document.getElementById('interests').style.display = "none";
-      document.getElementById('projects').style.display = "none";
-      break;
-    case 'interests':
-      document.getElementById('background').style.display = "none";
-      document.getElementById('projects').style.display = "none";
-      break; 
-    case 'projects':
-      document.getElementById('background').style.display = "none";
-      document.getElementById('interests').style.display = "none";
-      break; 
-  }  
+function setAboutContentTo(section) {  // eslint-disable-line no-unused-vars
+  document.getElementById('background').style.display = 'none';
+  document.getElementById('interests').style.display = 'none';
+  document.getElementById('projects').style.display = 'none';
+
+  document.getElementById(section).style.display = 'block';
+}
+
+/**
+ * Selects the contents of the 'Mood' section.
+ */
+function setMoodTo(mood) {  // eslint-disable-line no-unused-vars
+  document.getElementById('happy').style.display = 'none';
+  document.getElementById('sleepy').style.display = 'none';
+  document.getElementById('focused').style.display = 'none';
+  document.getElementById('energetic').style.display = 'none';
+  document.getElementById('goofy').style.display = 'none';
+
+  document.getElementById(mood).style.display = 'block';
 }

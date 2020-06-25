@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Bradley's Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
   </head>
 
@@ -11,30 +11,57 @@
     <div id="content">
       <h1>Bradley's Portfolio</h1>
       <p>This is the portfolio of Bradley.</p>
-      <p>My hobbies include wrestling my roommates (siblings) and playing videogames.</p>
-      <img src="img/dog.jpg" alt="my dog">
+      <p>Here's a picture of my dog, Redford. Sksksksk!</p>
+      <img src="/img/dog-halloween.jpg" alt="my dog" />
+      <br />
+      <a href="dog.html">See more of him!</a>
+      <br />
 
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">New Message</button>
+      <p>Click here to get a random line from one of my favorite shows:</p>
+      <button onclick="addRandomGreeting()" type="button">Gimme A Line</button>
       <div id="greeting-container"></div>
+      <br />
 
-      <p>Click on the buttons below to learn a bit more about me!</p>
-      <div class="btn-group" style:"width:100%">
-        <button style="width:33.3%" onclick="setAboutContentTo('background')">Background</button>
-        <button style="width:33.3%" onclick="setAboutContentTo('interests')">Interests</button>
-        <button style="width:33.3%" onclick="setAboutContentTo('projects')">Projects</button>
+      <h2>More About Me</h2>
+      <div class="btn-group" id="about-btns">
+        <button onclick="setAboutContentTo('background')" type="button">Background</button>
+        <button onclick="setAboutContentTo('interests')" type="button">Interests</button>
+        <button onclick="setAboutContentTo('projects')" type="button">Projects</button>
       </div>
-      
-      <div id="background" class="about-content">
-          <p>This is my background</p>
+
+      <div id="background" class="toggleable-content">
+        <p>
+          For most of my life, I've resided in sunny San Diego. I'm the first-born of three rambunctious children and a
+          proud member of a mixed-race family.
+        </p>
+        <p>
+          I was introduced to computer programming during high school, at an IDTech Java summer camp. After that, I
+          wanted to learn more, so I took a Computer Science class at my school. Taking that class gave me the push to
+          pursue this field as a career, and I have yet to look back.
+        </p>
       </div>
-      <div id="interests" class="about-content">
-          <p>These are my interests</p>
+      <div id="interests" class="toggleable-content">
+        <p>
+          Since the waning of the PS2 age I've been a bit of a gamer. I started with mainly racing games, as most other
+          genres were too violent by my parent's standards. My latest love has been Soulslike games, and at the moment I
+          find myself occupied with Sekiro and Dark Souls 2.
+        </p>
+        <p>
+          Likely due to my early involvement with Gran Turismo, I've always found cars really neat. For most of my life
+          my knowledge was limited to trivia, but a year ago I got my first car to work on and learn the mechanical side
+          of things.
+        </p>
+        <p>
+          In addition to the above, I recently (2 years ago) got into fitness. Once high school ended and I no longer
+          participated in organized sports, I wanted something to do to stay active. My dad had some dumbells in the
+          garage and I gave them a try.
+        </p>
       </div>
-      <div id="projects" class="about-content">
-          <p>These are my projects</p>
+      <div id="projects" class="toggleable-content">
+        <p>Here's a project I worked on this school year: the Guardian from Breath of the Wild.</p>
+        <!-- <img>Link recognition system</img> -->
+        <a href="https://github.com/UCLAX1/Guardian-V2">Check it out!</a>
       </div>
     </div>
   </body>
 </html>
-   
