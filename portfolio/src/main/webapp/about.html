@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>About me</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="navbar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Me</a>
+        <a href="dog.html">Redford Gallery</a>
+      </div>
+      <h1>About Me</h1>
+      <div class="btn-group" id="about-btns">
+        <button onclick="setAboutContentTo('background')" type="button">Background</button>
+        <button onclick="setAboutContentTo('interests')" type="button">Interests</button>
+        <button onclick="setAboutContentTo('projects')" type="button">Projects</button>
+      </div>
+
+      <div id="background" class="toggleable-content">
+        <p>
+          I was born on Oahu, Hawaii, but for most of my life, I've resided in sunny San Diego. I'm the first-born of
+          three rambunctious children and a proud member of a mixed-race family.
+        </p>
+        <div class="inline">
+          <img src="/img/st-vincent.webp" alt="Kingstown in St. Vincent" />
+          <p>
+            My mom's family comes from Saint Vincent, an island in the Caribbean. I visited once as a baby, but I
+            haven't been back since. I'm hoping to return someday.
+          </p>
+          <p>
+            We're not as sure about my dad's heritage but he has northwestern European ancestry.
+          </p>
+          <br />
+        </div>
+        <p>
+          I was introduced to computer programming during high school, at an IDTech Java summer camp. After that, I
+          wanted to learn more, so I took a Computer Science class at my school. Taking that class gave me the push to
+          pursue this field as a career, and I have yet to look back.
+        </p>
+      </div>
+      <div id="interests" class="toggleable-content">
+        <div class="inline">
+          <img src="/img/brothers-game.jpg" alt="My brother and I 'gaming'" />
+          <p>
+            Since I was pretty young I've been into video games. Even before my brother started playing with the
+            controller plugged in, the two of us have bonded over our shared interest. Unfortunately for him, I was
+            always just a teeny bit better ;)
+          </p>
+          <p>
+            I started with mainly racing games, then I graduated to Call of Duty and Battlefield. I had a brief stint
+            with RPG's, and my latest love has been Soulslike games. At the moment I find myself occupied with Sekiro
+            and Dark Souls 2.
+          </p>
+          <br />
+        </div>
+        <p>
+          In part due to my early involvement with Gran Turismo, I've always found cars really neat. For most of my life
+          my knowledge was limited to trivia, but a year ago I got my first car to work on and learn the mechanical side
+          of things.
+        </p>
+        <p>
+          In addition to the above, I recently (2 years ago) got into fitness. Once high school ended and I no longer
+          participated in organized sports, I wanted something to do to stay active. My dad had some dumbells in the
+          garage and I gave them a try. I didn't enjoy it at first but over time it's become a sort of therapy for me.
+        </p>
+      </div>
+      <div id="projects" class="toggleable-content">
+        <div class="inline">
+          <img src="/img/link-recognition.gif" alt="Link recognition demo" />
+          <h3>Guardian</h3>
+          <p>
+            I used the YoLo object-detection framework to implement a Link tracking system. When complete, the Guardian
+            robot would be able to locate and track the figurine, like the Guardians from Breath of the Wild.
+            Unfortunately, the integration stage was postponed, so the full robot isn't quite done.
+          </p>
+          <br />
+        </div>
+        <a href="https://github.com/UCLAX1/Guardian-V2">Check it out!</a>
+      </div>
+    </div>
+  </body>
+</html>
