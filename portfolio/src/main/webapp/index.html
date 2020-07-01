@@ -30,9 +30,11 @@
       <div id="avatar-container"></div>
 
       <p>Leave a Comment:</p>
-      <input type="text" id="comment-body" />
-      <button type="button" onclick="postComment()">Submit</button>
-      <br /><br />
+      <form onsubmit="postComment(event)">
+        <input type="text" id="comment-body" />
+        <button type="submit">Submit</button>
+        <br /><br />
+      </form>
 
       <p>Select number of comments to display:</p>
       <select onchange="getComments()" id="max-comment-select">
@@ -46,7 +48,7 @@
       <ul id="comment-list"></ul>
 
       <br />
-      <button type="button" onclick="deleteComments()">Delete All</button>
+      <button type="button" onclick="deleteCommentsTwice()">Delete All</button>
       <br />
     </div>
   </body>

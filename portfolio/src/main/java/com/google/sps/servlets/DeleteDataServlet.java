@@ -37,22 +37,15 @@ public class DeleteDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     System.out.println("Comment delete initiated.");
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Comment");
     PreparedQuery results = datastore.prepare(query);
-    ArrayList<Key> keys = new ArrayList<Key>();
+
     for (Entity entity : results.asIterable()) {
-      keys.add(entity.getKey());
+      datastore.delete(entity.getKey());
     }
-    Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
-    try {
-      datastore.delete(txn, keys);
-      txn.commit();
-    } finally {
-      if (txn.isActive()) {
-        txn.rollback();
-      }
-    }
+
     System.out.println("Comment delete finished.");
   }
 }
