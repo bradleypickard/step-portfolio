@@ -31,68 +31,44 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
-  private ArrayList<String> comments;
-
-  @Override
-  public void init() {
-    comments = new ArrayList<>();
-  }
-
+/** Servlet that handles submission and access of comments */
+@WebServlet("/marker")
+public class MarkerServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("Initiating Query. Size: " + comments.size());
-    comments.clear();
+    System.out.println("Initiating Query.");
+    ArrayList<String> markers = new ArrayList<String>();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    Query query = new Query("Comment");
+    Query query = new Query("Marker");
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
-      String comment = (String) entity.getProperty("body");
-      comments.add(comment);
+      String marker = (String) entity.getProperty("json");
+      markers.add(marker);
     }
-    System.out.println("Finished Query. Size: " + comments.size());
+    System.out.println("Finished Query. Size: " + markers.size());
 
-    String maxCommentParam = request.getParameter("max-comments");
-    int displayedComments = tryParseInt(maxCommentParam);
-
-    if (displayedComments >= 0)
-      writeGetResponse(response, displayedComments);
+    writeGetResponse(response, markers);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("Initiating post. Size before: " + comments.size());
-    String commentBody = request.getParameter("comment-body");
+    System.out.println("Initiating post.");
+    String markerJson = request.getParameter("json");
+    long timestamp = System.currentTimeMillis();
 
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("body", commentBody);
+    Entity markerEntity = new Entity("Marker");
+    markerEntity.setProperty("json", markerJson);
+    markerEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
+    datastore.put(markerEntity);
     System.out.println("Finishing post.");
   }
 
-  private int tryParseInt(String str) {
-    int num;
-    try {
-      num = Integer.parseInt(str);
-    } catch (NumberFormatException e) {
-      System.err.println("Invalid max comment parameter: " + str);
-      return -1;
-    }
-    return num;
-  }
-
-  private void writeGetResponse(HttpServletResponse response, int displayedComments)
+  private void writeGetResponse(HttpServletResponse response, ArrayList<String> markers)
       throws IOException {
-    if (displayedComments > comments.size())
-      displayedComments = comments.size();
-
-    ArrayList subList = new ArrayList<String>(comments.subList(0, displayedComments));
-    String json = convertToJsonUsingGson(subList);
+    String json = convertToJsonUsingGson(markers);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }

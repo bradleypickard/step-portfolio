@@ -20,9 +20,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Transaction;
-import com.google.appengine.api.datastore.TransactionOptions;
-import com.google.gson.Gson;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,28 +29,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/delete-data")
-public class DeleteDataServlet extends HttpServlet {
+/** Servlet that handles deletion of comments */
+@WebServlet("/delete-marker")
+public class DeleteMarkerServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("Comment delete initiated.");
+    System.out.println("Marker delete initiated.");
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("Comment");
+    Query query = new Query("Marker").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
-    ArrayList<Key> keys = new ArrayList<Key>();
-    for (Entity entity : results.asIterable()) {
-      keys.add(entity.getKey());
-    }
-    Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
-    try {
-      datastore.delete(txn, keys);
-      txn.commit();
-    } finally {
-      if (txn.isActive()) {
-        txn.rollback();
-      }
-    }
-    System.out.println("Comment delete finished.");
+
+    datastore.delete(results.asIterable().iterator().next().getKey());
+
+    System.out.println("Marker delete finished.");
   }
 }

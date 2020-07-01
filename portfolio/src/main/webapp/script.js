@@ -12,13 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/* global google */
+
+
 let navbar;
 let navOffset;
+let map;
+let markersCreated;
 
 window.onload = function() {
   navbar = document.getElementById('navbar');
   navOffset = navbar.offsetTop;
   getComments();
+  createMap();
+  markersCreated = 0;
 };
 
 window.onscroll = function() {
@@ -58,9 +65,9 @@ function addRandomLine() {  // eslint-disable-line no-unused-vars
   container.innerText = line;
 }
 
-function getComments() {  // eslint-disable-line no-unused-vars
+function getComments() {
   const maxComments = document.getElementById('max-comment-select').value;
-  fetch('/data?max-comments=' + maxComments)
+  fetch('/comment?max-comments=' + maxComments)
       .then((response) => response.json())
       .then((comments) => {
         console.log('Comments contained in servlet: ' + comments);
@@ -84,15 +91,27 @@ function createListElement(text) {
   return liElement;
 }
 
-function postComment() {  // eslint-disable-line no-unused-vars
+function postComment(e) {  // eslint-disable-line no-unused-vars
   const commentBody = document.getElementById('comment-body').value;
   const request =
-      new Request('/data?comment-body=' + commentBody, {method: 'POST'});
+      new Request('/comment?comment-body=' + commentBody, {method: 'POST'});
   fetch(request).then(() => getComments());
+
+  // Clear input form
+  document.getElementById('comment-body').value = '';
+
+  // cancel default event action (page refresh)
+  e = e || window.event;
+  e.preventDefault();
 }
 
-function deleteComments() {  // eslint-disable-line no-unused-vars
-  const request = new Request('/delete-data', {method: 'POST'});
+function deleteCommentsTwice() {  // eslint-disable-line no-unused-vars
+  deleteComments();
+  deleteComments();
+}
+
+function deleteComments() {
+  const request = new Request('/delete-comment', {method: 'POST'});
   fetch(request).then(() => getComments());
 }
 
@@ -118,4 +137,47 @@ function setMoodTo(mood) {  // eslint-disable-line no-unused-vars
   document.getElementById('goofy').style.display = 'none';
 
   document.getElementById(mood).style.display = 'block';
+}
+
+function createMap() {
+  map = new google.maps.Map(
+      document.getElementById('map'), {center: {lat: 20, lng: 0}, zoom: 1});
+
+  google.maps.event.addListener(map, 'click', function(event) {
+    postMarker(event.latLng);
+  });
+
+  getMarkers();
+}
+
+function getMarkers() {
+  fetch('/marker').then((response) => response.json()).then((markerJsons) => {
+    markerJsons.forEach((marker) => {
+      placeMarker(JSON.parse(marker));
+    });
+  });
+}
+
+function postMarker(location) {
+  placeMarker(location);
+  const request =
+      new Request('/marker?json=' + JSON.stringify(location), {method: 'POST'});
+  fetch(request);
+  markersCreated++;
+}
+
+function placeMarker(location) {
+  new google.maps.Marker({position: location, map: map});
+}
+
+/**
+ * Deletes the most recent marker placed. Only markers placed since the last
+ * page refresh can be deleted.
+ */
+function deleteRecentMarker() {  // eslint-disable-line no-unused-vars
+  if (markersCreated > 0) {
+    const request = new Request('/delete-marker', {method: 'POST'});
+    fetch(request).then(() => createMap());
+    markersCreated--;
+  }
 }

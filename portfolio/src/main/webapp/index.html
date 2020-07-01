@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <title>Home</title>
-    <link rel="stylesheet" href="style.css" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDn6sOeGKwWfuiB7W_CTRT3-245_fP_yfI"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
@@ -27,27 +28,37 @@
         While you're here, click the button below for a line from one of my favorite shows!
       </p>
       <div id="avatar-btn"><button onclick="addRandomLine()" type="button">Gimme A Line</button></div>
+      <br />
       <div id="avatar-container"></div>
+      <br /><br /><br />
 
-      <p>Leave a Comment:</p>
-      <input type="text" id="comment-body" />
-      <button type="button" onclick="postComment()">Submit</button>
+      <p>
+        Been somewhere cool? Click on the map to leave a marker! And check out all the places other visitors have been.
+      </p>
+      <div id="map"></div>
+      <button type="button" onclick="deleteRecentMarker()">Undo Marker</button>
       <br /><br />
 
-      <p>Select number of comments to display:</p>
-      <select onchange="getComments()" id="max-comment-select">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-      </select>
-      <br /><br />
+      <div class="inline-blk">
+        <form onsubmit="postComment(event)">
+          <input type="text" id="comment-body" placeholder="Leave a Comment" />
+          <button type="submit">Submit</button>
+        </form>
+
+        <select onchange="getComments()" id="max-comment-select">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+        <br /><br />
+      </div>
 
       <ul id="comment-list"></ul>
 
       <br />
-      <button type="button" onclick="deleteComments()">Delete All</button>
-      <br />
+      <button type="button" onclick="deleteCommentsTwice()">Delete All</button>
+      <br /><br />
     </div>
   </body>
 </html>
