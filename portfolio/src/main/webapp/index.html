@@ -1,40 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <title>Bradley's Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
   </head>
 
   <body>
     <div id="content">
+      <div id="navbar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Me</a>
+        <a href="dog.html">Redford Gallery</a>
+      </div>
       <h1>Bradley's Portfolio</h1>
-      <p>This is the portfolio of Bradley.</p>
-      <p>My hobbies include wrestling my roommates (siblings) and playing videogames.</p>
-      <img src="img/dog.jpg" alt="my dog">
+      <p>
+        Welcome to my portfolio! As a token of my appreciation, here's a picture of my dog, Redford. Sksksksk! If you'd
+        like to see more, make sure to check out the <a href="dog.html">gallery</a> page!
+      </p>
+      <img src="/img/dog-halloween.jpg" alt="my dog" />
+      <br />
+      <br />
+      <br />
+      <p>
+        While you're here, click the button below for a line from one of my favorite shows!
+      </p>
+      <div id="avatar-btn"><button onclick="addRandomLine()" type="button">Gimme A Line</button></div>
+      <div id="avatar-container"></div>
 
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">New Message</button>
-      <div id="greeting-container"></div>
+      <p>Leave a Comment:</p>
+      <input type="text" id="comment-body" />
+      <button type="button" onclick="postComment()">Submit</button>
+      <br /><br />
 
-      <p>Click on the buttons below to learn a bit more about me!</p>
-      <div class="btn-group" style:"width:100%">
-        <button style="width:33.3%" onclick="setAboutContentTo('background')">Background</button>
-        <button style="width:33.3%" onclick="setAboutContentTo('interests')">Interests</button>
-        <button style="width:33.3%" onclick="setAboutContentTo('projects')">Projects</button>
-      </div>
-      
-      <div id="background" class="about-content">
-          <p>This is my background</p>
-      </div>
-      <div id="interests" class="about-content">
-          <p>These are my interests</p>
-      </div>
-      <div id="projects" class="about-content">
-          <p>These are my projects</p>
-      </div>
+      <p>Select number of comments to display:</p>
+      <select onchange="getComments()" id="max-comment-select">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <br /><br />
+
+      <ul id="comment-list"></ul>
+
+      <br />
+      <button type="button" onclick="deleteComments()">Delete All</button>
+      <br />
     </div>
   </body>
 </html>
-   

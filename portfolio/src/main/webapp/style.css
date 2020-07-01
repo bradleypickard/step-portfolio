@@ -1,6 +1,35 @@
 #content {
   margin-left: auto;
   margin-right: auto;
+  padding-top: 60px;
+  width: 650px;
+}
+
+#content p {
+  font-size: 16px;
+}
+
+#navbar {
+  overflow: hidden;
+  background-color: rgb(0, 0, 0);
+}
+
+#navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+#navbar a:hover {
+  background-color: #303030;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
   width: 650px;
 }
 
@@ -9,7 +38,65 @@
 }
 
 img {
-    width: 500px
+  width: 650px;
+}
+
+#avatar-btn button {
+  background-color: rgb(0, 0, 0);
+  color: white;
+  align-self: center;
+}
+
+#avatar-btn button:hover {
+  color: lightskyblue;
+}
+
+#mood-btns button:focus {
+  color: white;
+}
+
+#happy-btn button:hover {
+  background-color: rgb(73, 40, 0);
+}
+
+#happy-btn button:focus {
+  background-color: darkorange;
+}
+
+#sleepy-btn button:hover {
+  background-color: rgb(0, 32, 73);
+}
+
+#sleepy-btn button:focus {
+  background-color: blue;
+}
+
+#focused-btn button:hover {
+  background-color: rgb(0, 59, 13);
+}
+
+#focused-btn button:focus {
+  background-color: green;
+}
+
+#energetic-btn button:hover {
+  background-color: rgb(73, 0, 67);
+}
+
+#energetic-btn button:focus {
+  background-color: magenta;
+}
+
+#goofy-btn button:hover {
+  background-color: rgb(73, 0, 0);
+}
+
+#goofy-btn button:focus {
+  background-color: red;
+}
+
+.btn-group {
+  width: 100%;
 }
 
 .btn-group button {
@@ -23,7 +110,7 @@ img {
 
 /* Clear floats (clearfix hack) */
 .btn-group:after {
-  content: "";
+  content: '';
   clear: both;
   display: table;
 }
@@ -33,12 +120,39 @@ img {
   background-color: #505050;
 }
 
-.btn-group button:focus {     
-    background-color:white;   
-    color:black; 
-    outline:0;
+.btn-group button:focus {
+  background-color: white;
+  color: black;
+  outline: 0;
 }
 
-.about-content {
-    display:none;
+.toggleable-content {
+  display: none;
+}
+
+.dog-gallery img {
+  width: 650px;
+}
+
+#about-btns button {
+  width: 33.3%;
+}
+
+#mood-btns button {
+  width: 20%;
+}
+
+.inline img {
+  width: 275px;
+  float: left;
+  margin-right: 20px;
+}
+
+.inline h3,
+.inline p {
+  margin-left: 20px;
+}
+
+.inline br {
+  clear: both;
 }

@@ -14,7 +14,18 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceConfig;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.ReadPolicy;
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +34,75 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  private ArrayList<String> comments;
+
+  @Override
+  public void init() {
+    comments = new ArrayList<>();
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello world!</h1>");
+    System.out.println("Initiating Query. Size: " + comments.size());
+    comments.clear();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    Query query = new Query("Comment");
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      String comment = (String) entity.getProperty("body");
+      comments.add(comment);
+    }
+    System.out.println("Finished Query. Size: " + comments.size());
+
+    String maxCommentParam = request.getParameter("max-comments");
+    int displayedComments = tryParseInt(maxCommentParam);
+
+    if (displayedComments >= 0)
+      writeGetResponse(response, displayedComments);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    System.out.println("Initiating post. Size before: " + comments.size());
+    String commentBody = request.getParameter("comment-body");
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("body", commentBody);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+    System.out.println("Finishing post.");
+  }
+
+  private int tryParseInt(String str) {
+    int num;
+    try {
+      num = Integer.parseInt(str);
+    } catch (NumberFormatException e) {
+      System.err.println("Invalid max comment parameter: " + str);
+      return -1;
+    }
+    return num;
+  }
+
+  private void writeGetResponse(HttpServletResponse response, int displayedComments)
+      throws IOException {
+    if (displayedComments > comments.size())
+      displayedComments = comments.size();
+
+    ArrayList subList = new ArrayList<String>(comments.subList(0, displayedComments));
+    String json = convertToJsonUsingGson(subList);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+  }
+
+  /**
+   * Converts a comments ArrayList instance into a JSON string using the Gson library.
+   */
+  private String convertToJsonUsingGson(ArrayList<String> comments) {
+    Gson gson = new Gson();
+    String json = gson.toJson(comments);
+    return json;
   }
 }

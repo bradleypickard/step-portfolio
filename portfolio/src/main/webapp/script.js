@@ -12,41 +12,110 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['That\'s rough buddy', 'My cabbages!', 'Flameo, hotman!', 'Who are you? And what do you want?'];
+let navbar;
+let navOffset;
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+window.onload = function() {
+  navbar = document.getElementById('navbar');
+  navOffset = navbar.offsetTop;
+  getComments();
+};
 
-  // Add it to the page.
-  const container = document.getElementById('greeting-container');
-  container.innerText = greeting;
-  
+window.onscroll = function() {
+  makeNavSticky();
+};
+
+function makeNavSticky() {
+  if (window.pageYOffset >= navOffset) {
+    navbar.classList.add('sticky');
+  } else {
+    navbar.classList.remove('sticky');
+  }
 }
 
+/**
+ * Adds a random Avatar line to the page.
+ */
+function addRandomLine() {  // eslint-disable-line no-unused-vars
+  const lines = [
+    'That\'s rough buddy.',
+    'My cabbages!',
+    'Flameo, hotman!',
+    'Yip yip!',
+    `Instead of seeing what they want you to see, you got to open your brain
+     to the possibilities.`,
+    'Life happens wherever you are, whether you make it or not.',
+    'Boomerang! You do always come back!',
+    'It\'s a giant mushroom! Maybe it\'s friendly!',
+    'I am not Toph! I am Melon-Lord! Muah-ha-ha-ha-ha!',
+  ];
+
+  // Pick a random line.
+  const line = lines[Math.floor(Math.random() * lines.length)];
+
+  // Add it to the page.
+  const container = document.getElementById('avatar-container');
+  container.innerText = line;
+}
+
+function getComments() {  // eslint-disable-line no-unused-vars
+  const maxComments = document.getElementById('max-comment-select').value;
+  fetch('/data?max-comments=' + maxComments)
+      .then((response) => response.json())
+      .then((comments) => {
+        console.log('Comments contained in servlet: ' + comments);
+        const commentEl = document.getElementById('comment-list');
+        removeAllChildNodes(commentEl);
+        comments.forEach((comment) => {
+          commentEl.appendChild(createListElement(comment));
+        });
+      });
+}
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+function postComment() {  // eslint-disable-line no-unused-vars
+  const commentBody = document.getElementById('comment-body').value;
+  const request =
+      new Request('/data?comment-body=' + commentBody, {method: 'POST'});
+  fetch(request).then(() => getComments());
+}
+
+function deleteComments() {  // eslint-disable-line no-unused-vars
+  const request = new Request('/delete-data', {method: 'POST'});
+  fetch(request).then(() => getComments());
+}
 
 /**
  * Selects the contents of the 'About' section.
  */
-function setAboutContentTo(section) {
-  elem = document.getElementById(section);
-  elem.style.display = "block";
-  switch (section) {
-    case 'background':
-      document.getElementById('interests').style.display = "none";
-      document.getElementById('projects').style.display = "none";
-      break;
-    case 'interests':
-      document.getElementById('background').style.display = "none";
-      document.getElementById('projects').style.display = "none";
-      break; 
-    case 'projects':
-      document.getElementById('background').style.display = "none";
-      document.getElementById('interests').style.display = "none";
-      break; 
-  }  
+function setAboutContentTo(section) {  // eslint-disable-line no-unused-vars
+  document.getElementById('background').style.display = 'none';
+  document.getElementById('interests').style.display = 'none';
+  document.getElementById('projects').style.display = 'none';
+
+  document.getElementById(section).style.display = 'block';
+}
+
+/**
+ * Selects the contents of the 'Mood' section.
+ */
+function setMoodTo(mood) {  // eslint-disable-line no-unused-vars
+  document.getElementById('happy').style.display = 'none';
+  document.getElementById('sleepy').style.display = 'none';
+  document.getElementById('focused').style.display = 'none';
+  document.getElementById('energetic').style.display = 'none';
+  document.getElementById('goofy').style.display = 'none';
+
+  document.getElementById(mood).style.display = 'block';
 }
