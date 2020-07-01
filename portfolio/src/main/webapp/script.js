@@ -58,7 +58,7 @@ function addRandomLine() {  // eslint-disable-line no-unused-vars
   container.innerText = line;
 }
 
-function getComments() {  // eslint-disable-line no-unused-vars
+function getComments() {
   const maxComments = document.getElementById('max-comment-select').value;
   fetch('/data?max-comments=' + maxComments)
       .then((response) => response.json())
@@ -84,14 +84,26 @@ function createListElement(text) {
   return liElement;
 }
 
-function postComment() {  // eslint-disable-line no-unused-vars
+function postComment(e) {  // eslint-disable-line no-unused-vars
   const commentBody = document.getElementById('comment-body').value;
   const request =
       new Request('/data?comment-body=' + commentBody, {method: 'POST'});
   fetch(request).then(() => getComments());
+
+  // Clear input form
+  document.getElementById('comment-body').value = '';
+
+  // cancel default event action (page refresh)
+  e = e || window.event;
+  e.preventDefault();
 }
 
-function deleteComments() {  // eslint-disable-line no-unused-vars
+function deleteCommentsTwice() {  // eslint-disable-line no-unused-vars
+  deleteComments();
+  deleteComments();
+}
+
+function deleteComments() {
   const request = new Request('/delete-data', {method: 'POST'});
   fetch(request).then(() => getComments());
 }
