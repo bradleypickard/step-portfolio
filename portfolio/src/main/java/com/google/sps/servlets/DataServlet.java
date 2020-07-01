@@ -34,17 +34,10 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private ArrayList<String> comments;
-
-  @Override
-  public void init() {
-    comments = new ArrayList<>();
-  }
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("Initiating Query. Size: " + comments.size());
-    comments.clear();
+    System.out.println("Initiating Query.");
+    ArrayList<String> comments = new ArrayList<String>();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Query query = new Query("Comment");
@@ -59,12 +52,12 @@ public class DataServlet extends HttpServlet {
     int displayedComments = tryParseInt(maxCommentParam);
 
     if (displayedComments >= 0)
-      writeGetResponse(response, displayedComments);
+      writeGetResponse(response, comments, displayedComments);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("Initiating post. Size before: " + comments.size());
+    System.out.println("Initiating post.");
     String commentBody = request.getParameter("comment-body");
 
     Entity commentEntity = new Entity("Comment");
@@ -86,8 +79,8 @@ public class DataServlet extends HttpServlet {
     return num;
   }
 
-  private void writeGetResponse(HttpServletResponse response, int displayedComments)
-      throws IOException {
+  private void writeGetResponse(HttpServletResponse response, ArrayList<String> comments,
+      int displayedComments) throws IOException {
     if (displayedComments > comments.size())
       displayedComments = comments.size();
 
