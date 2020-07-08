@@ -18,6 +18,7 @@
 let navbar;
 let navOffset;
 let map;
+let infoWindow;
 let markersCreated;
 
 window.onload = function() {
@@ -143,12 +144,47 @@ function createMap() {
   map = new google.maps.Map(
       document.getElementById('map'), {center: {lat: 20, lng: 0}, zoom: 1});
 
+  infoWindow = new google.maps.InfoWindow;
+
   google.maps.event.addListener(map, 'click', function(event) {
     postMarker(event.latLng);
   });
 
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          infoWindow.setPosition(pos);
+          infoWindow.setContent('Location found.');
+          infoWindow.open(map);
+          map.setCenter(pos);
+          map.setZoom(8);
+        },
+        function() {
+          handleLocationError(true, map.getCenter());
+        });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, map.getCenter());
+  }
+
   getMarkers();
 }
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(
+      browserHasGeolocation ?
+          'Error: The Geolocation service failed.' :
+          'Error: Your browser doesn\'t support geolocation.');
+  infoWindow.open(map);
+}
+
 
 function getMarkers() {
   fetch('/marker').then((response) => response.json()).then((markerJsons) => {
@@ -160,8 +196,8 @@ function getMarkers() {
 
 function postMarker(location) {
   placeMarker(location);
-  const request =
-      new Request('/marker?json=' + JSON.stringify(location), {method: 'POST'});
+  const request = new Request(
+      '/marker?location=' + JSON.stringify(location), {method: 'POST'});
   fetch(request);
   markersCreated++;
 }

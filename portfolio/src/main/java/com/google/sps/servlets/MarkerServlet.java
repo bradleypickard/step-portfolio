@@ -43,7 +43,7 @@ public class MarkerServlet extends HttpServlet {
     Query query = new Query("Marker");
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
-      String marker = (String) entity.getProperty("json");
+      String marker = (String) entity.getProperty("location");
       markers.add(marker);
     }
     System.out.println("Finished Query. Size: " + markers.size());
@@ -54,11 +54,11 @@ public class MarkerServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     System.out.println("Initiating post.");
-    String markerJson = request.getParameter("json");
+    String location = request.getParameter("location");
     long timestamp = System.currentTimeMillis();
 
     Entity markerEntity = new Entity("Marker");
-    markerEntity.setProperty("json", markerJson);
+    markerEntity.setProperty("location", location);
     markerEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -69,16 +69,16 @@ public class MarkerServlet extends HttpServlet {
   private void writeGetResponse(HttpServletResponse response, ArrayList<String> markers)
       throws IOException {
     String json = convertToJsonUsingGson(markers);
-    response.setContentType("application/json;");
+    response.setContentType("application/json");
     response.getWriter().println(json);
   }
 
   /**
    * Converts a comments ArrayList instance into a JSON string using the Gson library.
    */
-  private String convertToJsonUsingGson(ArrayList<String> comments) {
+  private String convertToJsonUsingGson(ArrayList<String> markers) {
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
+    String json = gson.toJson(markers);
     return json;
   }
 }

@@ -17,6 +17,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -40,7 +41,7 @@ public class DeleteMarkerServlet extends HttpServlet {
     Query query = new Query("Marker").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
-    datastore.delete(results.asIterable().iterator().next().getKey());
+    datastore.delete(results.asList(FetchOptions.Builder.withLimit(10)).get(0).getKey());
 
     System.out.println("Marker delete finished.");
   }
