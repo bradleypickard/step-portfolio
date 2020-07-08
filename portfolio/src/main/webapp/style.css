@@ -3,6 +3,12 @@
   margin-right: auto;
   padding-top: 60px;
   width: 650px;
+  height: 100%;
+}
+
+#map {
+  height: 450px;
+  width: 650px;
 }
 
 #content p {
@@ -155,4 +161,24 @@ img {
 
 .inline br {
   clear: both;
+}
+
+.inline-blk {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.inline-blk form,
+.inline-blk select {
+  display: inline-block;
+  height: 100%;
+}
+
+.inline-blk form {
+  width: 50%;
 }
