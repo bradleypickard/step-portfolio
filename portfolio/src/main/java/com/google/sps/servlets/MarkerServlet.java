@@ -31,71 +31,54 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
+/** Servlet that handles submission and access of comments */
+@WebServlet("/marker")
+public class MarkerServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     System.out.println("Initiating Query.");
-    ArrayList<String> comments = new ArrayList<String>();
+    ArrayList<String> markers = new ArrayList<String>();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    Query query = new Query("Comment");
+    Query query = new Query("Marker");
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
-      String comment = (String) entity.getProperty("body");
-      comments.add(comment);
+      String marker = (String) entity.getProperty("location");
+      markers.add(marker);
     }
-    System.out.println("Finished Query. Size: " + comments.size());
+    System.out.println("Finished Query. Size: " + markers.size());
 
-    String maxCommentParam = request.getParameter("max-comments");
-    int displayedComments = tryParseInt(maxCommentParam);
-
-    if (displayedComments >= 0)
-      writeGetResponse(response, comments, displayedComments);
+    writeGetResponse(response, markers);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     System.out.println("Initiating post.");
-    String commentBody = request.getParameter("comment-body");
+    String location = request.getParameter("location");
+    long timestamp = System.currentTimeMillis();
 
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("body", commentBody);
+    Entity markerEntity = new Entity("Marker");
+    markerEntity.setProperty("location", location);
+    markerEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
+    datastore.put(markerEntity);
     System.out.println("Finishing post.");
   }
 
-  private int tryParseInt(String str) {
-    int num;
-    try {
-      num = Integer.parseInt(str);
-    } catch (NumberFormatException e) {
-      System.err.println("Invalid max comment parameter: " + str);
-      return -1;
-    }
-    return num;
-  }
-
-  private void writeGetResponse(HttpServletResponse response, ArrayList<String> comments,
-      int displayedComments) throws IOException {
-    if (displayedComments > comments.size())
-      displayedComments = comments.size();
-
-    ArrayList subList = new ArrayList<String>(comments.subList(0, displayedComments));
-    String json = convertToJsonUsingGson(subList);
-    response.setContentType("application/json;");
+  private void writeGetResponse(HttpServletResponse response, ArrayList<String> markers)
+      throws IOException {
+    String json = convertToJsonUsingGson(markers);
+    response.setContentType("application/json");
     response.getWriter().println(json);
   }
 
   /**
    * Converts a comments ArrayList instance into a JSON string using the Gson library.
    */
-  private String convertToJsonUsingGson(ArrayList<String> comments) {
+  private String convertToJsonUsingGson(ArrayList<String> markers) {
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
+    String json = gson.toJson(markers);
     return json;
   }
 }
