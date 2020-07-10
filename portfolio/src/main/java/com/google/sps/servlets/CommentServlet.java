@@ -22,6 +22,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.ReadPolicy;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,20 +34,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+class Comment {
+  public String body;
+  public String score;
+}
+
 /** Servlet that handles submission and access of comments */
 @WebServlet("/comment")
 public class CommentServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     System.out.println("Initiating Query.");
-    ArrayList<String> comments = new ArrayList<String>();
+    ArrayList<Comment> comments = new ArrayList<Comment>();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Query query = new Query("Comment");
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
-      String comment = (String) entity.getProperty("body");
-      comments.add(comment);
+      Comment curr = new Comment();
+      curr.body = (String) entity.getProperty("body");
+      curr.score = String.format("%.02f", (double) entity.getProperty("score"));
+      comments.add(curr);
     }
     System.out.println("Finished Query. Size: " + comments.size());
 
@@ -60,8 +70,16 @@ public class CommentServlet extends HttpServlet {
     System.out.println("Initiating post.");
     String commentBody = request.getParameter("comment-body");
 
+    Document doc =
+        Document.newBuilder().setContent(commentBody).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("body", commentBody);
+    commentEntity.setProperty("score", score);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
@@ -79,12 +97,12 @@ public class CommentServlet extends HttpServlet {
     return num;
   }
 
-  private void writeGetResponse(HttpServletResponse response, ArrayList<String> comments,
+  private void writeGetResponse(HttpServletResponse response, ArrayList<Comment> comments,
       int displayedComments) throws IOException {
     if (displayedComments > comments.size())
       displayedComments = comments.size();
 
-    ArrayList subList = new ArrayList<String>(comments.subList(0, displayedComments));
+    ArrayList subList = new ArrayList<Comment>(comments.subList(0, displayedComments));
     String json = convertToJsonUsingGson(subList);
     response.setContentType("application/json;");
     response.getWriter().println(json);
