@@ -90,7 +90,8 @@ function createCommentElement(comment) {
   const commentElement = document.createElement('div');
   commentElement.classList.add('comment');
   commentElement.appendChild(createBasicElement(comment.body, 'p'));
-  commentElement.appendChild(createBasicElement('Score: ' + comment.score, 'h4'));
+  commentElement.appendChild(
+      createBasicElement('Score: ' + comment.score, 'h4'));
   return commentElement;
 }
 
