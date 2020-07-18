@@ -33,7 +33,7 @@ public final class FindMeetingQuery {
     LinkedList<TimeRange> freeList = new LinkedList<TimeRange>();
     freeList.add(TimeRange.WHOLE_DAY);
 
-    // Carve freeList down into series of non-conflicting chunks
+    // Carve freeList down into series of non-conflicting chunks.
     for (Event event : events) {
         if (( !considerOptionalAttendees
               || Collections.disjoint(event.getAttendees(), request.getOptionalAttendees()))
@@ -53,7 +53,7 @@ public final class FindMeetingQuery {
         }
     }
 
-    // Trim off freeBlocks of insufficient size
+    // Trim off freeBlocks of insufficient size.
     long requiredDuration = request.getDuration();
     ListIterator<TimeRange> iter = freeList.listIterator(0);
     while (iter.hasNext()) {
