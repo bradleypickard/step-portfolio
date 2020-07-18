@@ -71,11 +71,11 @@ function getComments() {
   fetch('/comment?max-comments=' + maxComments)
       .then((response) => response.json())
       .then((comments) => {
-        console.log('Comments contained in servlet: ' + comments);
+        // console.log('Comments contained in servlet: ' + comments);
         const commentEl = document.getElementById('comment-list');
         removeAllChildNodes(commentEl);
         comments.forEach((comment) => {
-          commentEl.appendChild(createListElement(comment));
+          commentEl.appendChild(createCommentElement(comment));
         });
       });
 }
@@ -86,10 +86,19 @@ function removeAllChildNodes(parent) {
   }
 }
 
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+function createCommentElement(comment) {
+  const commentElement = document.createElement('div');
+  commentElement.classList.add('comment');
+  commentElement.appendChild(createBasicElement(comment.body, 'p'));
+  commentElement.appendChild(
+      createBasicElement('Score: ' + comment.score, 'h4'));
+  return commentElement;
+}
+
+function createBasicElement(text, type) {
+  const basicElement = document.createElement(type);
+  if (text != '') basicElement.innerText = text;
+  return basicElement;
 }
 
 function postComment(e) {  // eslint-disable-line no-unused-vars

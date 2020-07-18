@@ -182,3 +182,24 @@ img {
 .inline-blk form {
   width: 50%;
 }
+
+.comment {
+  display: flex;
+  flex-wrap: nowrap;
+  background-color: aliceblue;
+  border-style: none none solid none;
+  border-width: 2px;
+  padding-top: 5px;
+  padding-left: 5px;
+  margin-bottom: 15px;
+}
+
+.comment p {
+  width: 80%;
+}
+
+.comment h4 {
+  width: 20%;
+  text-align: center;
+  margin: auto;
+}
